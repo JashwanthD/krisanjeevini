@@ -132,6 +132,9 @@ export default function ModulePathology() {
     const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
     setCapturedImage(dataUrl);
 
+    // Stop camera to freeze the frame on screen
+    stopCamera();
+
     // Get pixel data
     const imageData = ctx.getImageData(0, 0, 224, 224);
 
@@ -177,7 +180,7 @@ export default function ModulePathology() {
     } finally {
       setScanning(false);
     }
-  }, [modelStatus]);
+  }, [modelStatus, stopCamera]);
 
   /**
    * Mock inference: analyzes the pixel distribution to produce somewhat
@@ -227,7 +230,8 @@ export default function ModulePathology() {
   const handleRetake = useCallback(() => {
     setResult(null);
     setCapturedImage(null);
-  }, []);
+    startCamera();
+  }, [startCamera]);
 
   const classInfo = result ? CLASS_LABELS[result.classIndex] : null;
 
